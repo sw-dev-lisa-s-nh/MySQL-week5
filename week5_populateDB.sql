@@ -69,16 +69,16 @@ VALUES ("String","Violin1"),
 	   ("Percussion","Bells/Chimes"),
 	   ("Percussion","Tympani"),
 	   ("Percussion","Random"),
+	   ("Percussion","Harp"),
 	   ("Keyboard","Piano"), 
 	   ("Keyboard","Celesta"), 
 	   ("Keyboard","Harpsichord"),
-	   ("Percussion","Harp"),
-	   ("Voice","Soprano"),
-	   ("Voice","Mezzo"),
-	   ("Voice","Alto"),
-	   ("Voice","Tenor"),
-	   ("Voice","Baritone"),
-	   ("Voice","Bass");
+	   ("Voice","Soprano Vocals"),
+	   ("Voice","Mezzo Vocals"),
+	   ("Voice","Alto Vocals"),
+	   ("Voice","Tenor Vocals"),
+	   ("Voice","Baritone Vocals"),
+	   ("Voice","Bass Vocals");
 
 
 -- 
@@ -90,13 +90,13 @@ VALUES
 	("Minnie","Mouse","Violin2",""),
 	("Donald","Duck","Viola",""),
 	("Daisy","Duck","Cello",""),
-	("Tinkerbell","Fairy","Soprano",""),
+	("Tinkerbell","Fairy","Soprano Vocals",""),
 	("Pluto","Dog","Double Bass",""),
 	("Hewey","Duck","Oboe","English Horn"),
 	("Duey","Duck","Flute","Piccolo"),
 	("Louie","Duck","Clarinet",""),
 	("Scrooge","McDuck","Trumpet",""),
-	("Jiminy","Cricket","Soprano","Bells"),
+	("Jiminy","Cricket","Soprano Vocals","Bells"),
 	("Dumbo","Elephant","Double Bass",""),
 	("Blackheart","Beagle","Tuba",""),
 	("Grandpa","Beagle","Tympani",""),
@@ -201,7 +201,7 @@ CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
 SELECT instrument_id into @temp_id from instruments where name = "Tuba";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
              
--- Kettle Drum(1), Percussionists(3-4)
+-- Kettle Drum(1), Percussionists(3-4), Harp (1-2) 
 
 SELECT instrument_id into @temp_id from instruments where name = "Tympani";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
@@ -211,11 +211,11 @@ CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
 
 SELECT instrument_id into @temp_id from instruments where name = "Random";
 CALL InsertPositionsIntoSymphonyOrchestra(3, @temp_id);
-          
--- Harp (1-2) Keyboard Player(Piano, Celesta, Harpsichord)(1)
 
 SELECT instrument_id into @temp_id from instruments where name = "Harp";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
+          
+-- Keyboard Player(Piano, Celesta, Harpsichord)(1)
 
 SELECT instrument_id into @temp_id from instruments where name = "Piano";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
@@ -227,20 +227,20 @@ SELECT instrument_id into @temp_id from instruments where name = "Harpsichord";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
 
 -- Voice
-SELECT instrument_id into @temp_id from instruments where name = "Soprano";
+SELECT instrument_id into @temp_id from instruments where name = "Soprano Vocals";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
  
-SELECT instrument_id into @temp_id from instruments where name = "Mezzo";
+SELECT instrument_id into @temp_id from instruments where name = "Mezzo Vocals";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
 
-SELECT instrument_id into @temp_id from instruments where name = "Alto";
+SELECT instrument_id into @temp_id from instruments where name = "Alto Vocals";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
 
-SELECT instrument_id into @temp_id from instruments where name = "Tenor";
+SELECT instrument_id into @temp_id from instruments where name = "Tenor Vocals";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
 
-SELECT instrument_id into @temp_id from instruments where name = "Baritone";
+SELECT instrument_id into @temp_id from instruments where name = "Baritone Vocals";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);
       
-SELECT instrument_id into @temp_id from instruments where name = "Bass";
+SELECT instrument_id into @temp_id from instruments where name = "Bass Vocals";
 CALL InsertPositionsIntoSymphonyOrchestra(1, @temp_id);

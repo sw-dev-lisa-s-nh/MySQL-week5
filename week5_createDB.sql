@@ -30,9 +30,10 @@ CREATE DATABASE orchestra;
 
 USE orchestra;
 
-DROP TABLE IF EXISTS member;
-DROP TABLE IF EXISTS position;
-DROP TABLE IF EXISTS instrument;
+DROP TABLE IF EXISTS members;
+DROP TABLE IF EXISTS positions;
+DROP TABLE IF EXISTS musicians;
+DROP TABLE IF EXISTS instruments;
 
 
 CREATE TABLE instruments (
@@ -62,11 +63,12 @@ CREATE TABLE positions (
 
 CREATE TABLE members (
 	member_id INT NOT NULL AUTO_INCREMENT,
-	instrument_id INT NOT NULL,
-	position_id INT NOT null,
+	position_id INT NOT NULL,
+	musician_id INT NOT NULL,
 	PRIMARY KEY (member_id),
-	FOREIGN KEY (instrument_id) REFERENCES instruments(instrument_id),
-	FOREIGN KEY (position_id) REFERENCES positions(position_id)
+	FOREIGN KEY (position_id) REFERENCES positions(position_id),
+	FOREIGN KEY (musician_id) REFERENCES musicians(musician_id)
+
 );
 
 
