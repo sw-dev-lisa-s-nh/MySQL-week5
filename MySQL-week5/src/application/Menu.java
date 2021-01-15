@@ -3,16 +3,21 @@
  *  MySQL Week 5 Coding Assignment
  * 
  *  Menu Class
- * 
+ * JavaSE-1.8
  */
 
 
-package com.lisasmith.week5;
+package application;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import dao.InstrumentDao;
+import dao.MusicianDao;
+import entity.Instrument;
+import entity.Musician;
 
 
 public class Menu {
@@ -44,59 +49,61 @@ public class Menu {
 			try {
 				if (selection.equals("1")) {
 					System.out.println();
-					System.out.println("\tDisplay all Instruments...");
+					System.out.println("\tDisplaying all Instruments...");
 					System.out.println();
 					displayInstruments();
 				} else if (selection.equals("2")) {
 					System.out.println();
-					System.out.println("\tDisplay one Instrument...");
+					System.out.println("\tDisplaying one Instrument...");
 					System.out.println();
 					displayInstrument();
 				} else if (selection.equals("3")) {
 					System.out.println();
-					System.out.println("\tCreate an Instrument...");
+					System.out.println("\tAdding an Instrument...");
 					System.out.println();
 					createInstrument();
 				} else if (selection.equals("4")) {
 					System.out.println();
-					System.out.println("\tDelete an Instrument...");
+					System.out.println("\tDeleting an Instrument...");
 					System.out.println();
 					deleteInstrument();
 				} else if (selection.equals("5")) {
 					System.out.println();
-					System.out.println("\tUpdate an Instrument...");
+					System.out.println("\tUpdating an Instrument...");
 					System.out.println();
 					updateInstrument();		
 				} else if (selection.equals("6")) {
 					System.out.println();
-					System.out.println("\tDisplay all Musicians...");
+					System.out.println("\tDisplaying all Musicians...");
 					System.out.println();
 					displayMusicians();
 				} else if (selection.equals("7")) {
 					System.out.println();
-					System.out.println("\tDisplay Musicians By Instrument...");
+					System.out.println("\tDisplaying Musicians By Instrument...");
 					System.out.println();
 					displayMusiciansByInstrument();
 				} else if (selection.equals("8")) {
 					System.out.println();
-					System.out.println("\tAdd a Musician...");
+					System.out.println("\tAdding a Musician...");
 					System.out.println();
 					addMusician();		
 				} else if (selection.equals("9")) {
 					System.out.println();
-					System.out.println("\tDelete a Musician...");
+					System.out.println("\tDeleting a Musician...");
 					System.out.println();
 					deleteMusician();
 				} else if (selection.equals("10")) {
 					System.out.println();
-					System.out.println("\tUpdate a Musician...");
+					System.out.println("\tUpdating a Musician...");
 					System.out.println();
 					updateMusician();
-				} else {
-					
+				} else  if (!selection.equals("-1"))  {
+					System.out.println("Invalid entry -- Try again!");
 				} 
 			} catch (SQLException e) {
-				e.printStackTrace();		
+				e.printStackTrace();
+				System.out.println("Invalid entry -- Try again!");
+
 			}
 			/*
 			 * Add a pause into the console output before displaying the menu again,
@@ -140,7 +147,7 @@ public class Menu {
 	private void displayInstruments() throws SQLException {
 		List<Instrument> instruments = instrumentDao.getInstruments();
 		for (Instrument instrument : instruments) {
-			System.out.println(instrument.getInstrument_id() + ": " + instrument.getName() + "\n\tSection: " + instrument.getSection());
+			System.out.println("Id " + instrument.getInstrument_id() + ": " + instrument.getName() + "\n\tSection: " + instrument.getSection());
 		}		
 	}
 	
@@ -151,7 +158,11 @@ public class Menu {
 		System.out.print("Enter Instrument Id to Display: ");
 		int id = Integer.parseInt(scanner.nextLine());
 		Instrument instrument = instrumentDao.getInstrumentById(id);
-		System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());		
+		if (!(instrument == null)) {
+			System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());
+		} else {
+			System.out.println("\tInstrument Id invalid!");
+		}
 	}
 	
 	/*
@@ -171,8 +182,27 @@ public class Menu {
 	private void deleteInstrument() throws SQLException {
 		System.out.print("Enter Instrument Name to Delete: ");
 		String deleteName = scanner.nextLine();
-		instrumentDao.deleteInstrument(deleteName);	
+		
+		/* 
+		 * Confirm user wants to delete the Instrument Name Specified
+		 */
+		System.out.println("Deleting Instrument...");
+		Instrument instrument = instrumentDao.getInstrumentByName(deleteName);
+		if (!(instrument == null)) {
+			System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());		
+			System.out.println();
+			System.out.print("Would you like to proceed, yes or no?  ");
+			String response = scanner.nextLine();
+			if (response.equalsIgnoreCase("yes")) {
+				instrumentDao.deleteInstrument(deleteName);		
+			} else {
+				System.out.println("Delete Instrument not performed!");
+			}		
+		} else {
+			System.out.println("\tInstrument Name is invalid -- Delete not performed!");
+		}		 
 	}
+
 	
 	/*
 	 * updateInstrument() method
@@ -183,21 +213,27 @@ public class Menu {
 		System.out.println();
 		System.out.println("Updating This Instrument...");
 		Instrument instrument = instrumentDao.getInstrumentById(updateId);
-		System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());						
-		System.out.println();
+		if (!(instrument == null)) {		
+			System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());						
+			System.out.println();
 			
-		System.out.println("Simply press <enter> if the answer is \"no\"");
-		System.out.print("If updating Orchestra Section, enter New Section Name: ");
-		String section = scanner.nextLine();
-		System.out.print("If updating Instrument Name, enter New Instrument Name: ");
-		String instName = scanner.nextLine();	
+			System.out.println("Simply press <enter> if the answer is \"no\"");
+			System.out.print("If updating Orchestra Section, enter New Section Name: ");
+			String section = scanner.nextLine();
+			System.out.print("If updating Instrument Name, enter New Instrument Name: ");
+			String instName = scanner.nextLine();	
 		
-		instrumentDao.updateInstrument(updateId,section,instName);	
-		System.out.println("\nUpdated Instrument Id: " + updateId);
-		instrument = instrumentDao.getInstrumentById(updateId);
-		System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());						
-		System.out.println();
+			instrumentDao.updateInstrument(updateId,section,instName);	
+			System.out.println("\nUpdated Instrument Id: " + updateId);
+			instrument = instrumentDao.getInstrumentById(updateId);
+			System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());						
+			System.out.println();
+		} else {
+			System.out.println("\tInstrument Id is invalid -- Update not performed!");
+		}
+
 	}
+		
 	
 	
 	/*
@@ -218,17 +254,19 @@ public class Menu {
 	 */
 	private void displayMusician(int id) throws SQLException {		
 		Musician musician = musicianDao.getMusician(id);
-		StringBuilder lastInst = new StringBuilder();
-		if (musician.getInstrument2().equals("")) {
-			lastInst.append("");
-		} else {
-			lastInst.append(" & ");
-			lastInst.append(musician.getInstrument2());			
-		}
-		System.out.println("Id: " + musician.getMusician_id() + " Name: " + musician.getFirst_name() + " " 
-						+ musician.getLast_name() + "\n\tInstrument(s): " + musician.getInstrument1() + " " 
-						+ lastInst.toString());	
+		StringBuilder allInst = new StringBuilder();
+	
+	    for (Instrument  instrument : instrumentDao.getInstrumentsByMusicianId(id)) {
+	    	allInst.append(instrument.getName());
+	    	allInst.append(" & ");
+	    }	  
+	    if (allInst.length() > 1 ) {
+	    		allInst.deleteCharAt(allInst.length()-2);
+	    }
+		System.out.println("Id: " + musician.getMusician_id() + " \tName: " + musician.getFirst_name() + " " 
+						+ musician.getLast_name() + "\n\t\t\tInstrument(s): " + allInst.toString());	
 	}
+	
 	
 	/*
 	 * displayMusiciansByInstrument() method
@@ -236,12 +274,13 @@ public class Menu {
 	private void displayMusiciansByInstrument() throws SQLException {
 		System.out.print("Enter Instrument Name: ");
 		String instName = scanner.nextLine();
-		List<Musician> musicians  = musicianDao.getMusiciansByInstrument(instName);
+		List<Musician> musicians  = musicianDao.getMusiciansByInstrumentName(instName);
 		for (Musician musician : musicians) {
-			System.out.println("\t\tId: " + musician.getMusician_id() + " Name: " 
-									      + musician.getFirst_name() + " " + musician.getLast_name());	
+			System.out.println("\t\tMusician Id: " + musician.getMusician_id() + "\tName: " 
+							+ musician.getFirst_name() + " " + musician.getLast_name());	
 		}
 	}
+	
 	
 	/*
 	 * addMusician() method
@@ -251,11 +290,9 @@ public class Menu {
 		String first_name = scanner.nextLine();
 		System.out.print("Enter Last Name: ");
 		String last_name = scanner.nextLine();
-		System.out.print("Enter Primary Instrument Name: ");
-		String instOne = scanner.nextLine();
-		System.out.print("Enter Secondary Instrument Name: ");
-		String instTwo = scanner.nextLine();		
-		musicianDao.createNewMusician(first_name,last_name,instOne,instTwo);
+		System.out.print("Enter Primary Instrument: ");
+		String instOne = scanner.nextLine();	
+		musicianDao.createNewMusician(first_name,last_name,instOne);
 	}
 	
 	/*
@@ -281,9 +318,9 @@ public class Menu {
 	 */
 	private void updateMusician() throws SQLException {
 		System.out.print("Enter Musician Id you want to update:");	
-		int id = Integer.parseInt(scanner.nextLine());
+		int id = Integer.parseInt(scanner.nextLine());			
 		System.out.println();
-		System.out.println("Updating This Musician...");
+		System.out.println("Updating This Musician...");		
 		displayMusician(id);
 		System.out.println();
 		System.out.println("Simply <return> if the answer is \"no\"");
@@ -292,10 +329,8 @@ public class Menu {
 		System.out.print("If updating Last Name, enter New Last Name: ");
 		String last_name = scanner.nextLine();
 		System.out.print("If updating Primary Instrument, enter New Primary Instrument Name: ");
-		String instOne = scanner.nextLine();
-		System.out.print("If updating Secondary Instrument, enter New Secondary Instrument Name: ");
-		String instTwo = scanner.nextLine();						
-		musicianDao.updateMusicianById(id,first_name,last_name,instOne,instTwo);
+		String instOne = scanner.nextLine();					
+		musicianDao.updateMusicianById(id,first_name,last_name,instOne);
 		System.out.println("\nUpdated Musician Id: " + id);
 		displayMusician(id);
 	}

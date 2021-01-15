@@ -2,13 +2,13 @@
  *  Promineo Tech BESD Bootcamp
  *  MySQL Week 5 Coding Assignment
  *  Main Method:  calls Menu
+ *   
+ *  JavaSE-1.8
  *  
  *  Author:  Lisa Maatta Smith
  */
 
-
-package com.lisasmith.week5;
-
+package application;
 
 public class Application {
 
@@ -16,7 +16,6 @@ public class Application {
 
 		Menu menu = new Menu();
 		menu.start();
-		
 	}
 
 }

@@ -84,29 +84,123 @@ VALUES ("String","Violin1"),
 -- 
 -- Populate the musicians table
 -- 
-INSERT INTO musicians(first_name,last_name, instrument1, instrument2) 
-VALUES 
-	("Mickey","Mouse","Violin1",""),
-	("Minnie","Mouse","Violin2",""),
-	("Donald","Duck","Viola",""),
-	("Daisy","Duck","Cello",""),
-	("Tinkerbell","Fairy","Soprano Vocals",""),
-	("Pluto","Dog","Double Bass",""),
-	("Hewey","Duck","Oboe","English Horn"),
-	("Duey","Duck","Flute","Piccolo"),
-	("Louie","Duck","Clarinet",""),
-	("Scrooge","McDuck","Trumpet",""),
-	("Jiminy","Cricket","Soprano Vocals","Bells"),
-	("Dumbo","Elephant","Double Bass",""),
-	("Blackheart","Beagle","Tuba",""),
-	("Grandpa","Beagle","Tympani",""),
-	("176-761 Burger","Beagle","Violin2",""),
-	("617-716 Baggy","Beagle","Violin2",""),
-	("176-167 Babyface","Beagle","Violin1",""),
-	("716-167 Bouncer","Beagle","Trumpet",""),
-	("617-167 Bankjob","Beagle","Random",""),
-	("167-671 Bigtime", "Beagle", "Cello", ""),
-	("671-761 Bugle/Bebop", "Beagle", "Cello", "");
+
+INSERT INTO musicians(first_name,last_name) 
+VALUES 	("Mickey","Mouse"),
+		("Minnie","Mouse"),
+		("Donald","Duck"),
+		("Daisy","Duck"),
+		("Tinkerbell","Fairy"),
+		("Pluto","Dog"),
+		("Hewey","Duck"),
+		("Duey","Duck"),
+		("Louie","Duck"),
+		("Scrooge","McDuck"),
+		("Jiminy","Cricket"),
+		("Dumbo","Elephant"),
+		("Blackheart","Beagle"),
+		("Grandpa","Beagle"),
+		("176-761 Burger","Beagle"),
+		("617-716 Baggy","Beagle"),
+		("176-167 Babyface","Beagle"),
+		("716-167 Bouncer","Beagle"),
+		("617-167 Bankjob","Beagle"),
+		("167-671 Bigtime", "Beagle"),
+		("671-761 Bugle/Bebop", "Beagle");
+		
+		
+--  FUTURE EXTENSION:  Add functionality to support multiple instruments by musician
+--  The database supports it, but the Java program is a work in progress.
+
+SET @main = 'primary';
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Mickey" AND last_name = "Mouse";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Violin1";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Minnie" AND last_name = "Mouse";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Violin2";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Donald" AND last_name = "Duck";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Viola";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Daisy" AND last_name = "Duck";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Cello";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Tinkerbell" AND last_name = "Fairy";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Soprano Vocals";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Pluto" AND last_name = "Dog";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Double Bass";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Hewey" AND last_name = "Duck";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Oboe";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Duey" AND last_name = "Duck";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Flute";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Louie" AND last_name = "Duck";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Clarinet";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Scrooge" AND last_name = "McDuck";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Trumpet";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Jiminy" AND last_name = "Cricket";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Soprano Vocals";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Dumbo" AND last_name = "Elephant";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Double Bass";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Blackheart" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Tuba";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "Grandpa" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Tuba";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "176-761 Burger" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Violin2";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "617-716 Baggy" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Violin2";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "176-167 Babyface" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Violin1";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "716-167 Bouncer" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Trumpet";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "617-167 Bankjob" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Random";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "167-671 Bigtime" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Cello";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+SELECT musician_id into @music_id FROM musicians WHERE first_name = "671-761 Bugle/Bebop" AND last_name = "Beagle";
+SELECT instrument_id INTO @inst_id FROM instruments WHERE name = "Cello";
+INSERT INTO musician_instrument (musician_id,instrument_id,main_instrument) VALUES (@music_id,@inst_id,@main);
+
+
+
+
+
 
 --
 -- Populate the positions table

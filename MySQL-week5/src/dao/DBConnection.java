@@ -1,12 +1,12 @@
 /*
- *  Promineo Tech BESD Bootcamp
+ * Promineo Tech BESD Bootcamp
  * MySQL Week 5 Coding Assignment
  * 
  * DBConnection Class
- * 
+ * JavaSE-1.8
  */
 
-package com.lisasmith.week5;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

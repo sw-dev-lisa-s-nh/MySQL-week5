@@ -32,6 +32,7 @@ USE orchestra;
 
 DROP TABLE IF EXISTS members;
 DROP TABLE IF EXISTS positions;
+DROP TABLE IF EXISTS musician_instrument;
 DROP TABLE IF EXISTS musicians;
 DROP TABLE IF EXISTS instruments;
 
@@ -47,9 +48,14 @@ CREATE TABLE musicians (
 	musician_id INT NOT NULL AUTO_INCREMENT,
 	first_name VARCHAR(20) NOT NULL,
 	last_name VARCHAR(30) NOT NULL,
-	instrument1 VARCHAR(20) NOT NULL,
-	instrument2 VARCHAR(20) DEFAULT NULL,	
 	PRIMARY KEY (musician_id)
+);
+
+CREATE TABLE musician_instrument (
+	musician_id INT NOT NULL,
+	instrument_id INT NOT NULL,
+	main_instrument ENUM ('primary','secondary','other'),
+	PRIMARY KEY (musician_id,instrument_id)
 );
 
 CREATE TABLE positions (

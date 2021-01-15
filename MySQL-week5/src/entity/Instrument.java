@@ -3,10 +3,10 @@
  *  MySQL Week 5 Coding Assignment
  * 
  *  Instrument Entity Class
- * 
+ *  JavaSE-1.8
  */
 
-package com.lisasmith.week5;
+package entity;
 
 public class Instrument {
 
