@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 import dao.InstrumentDao;
 import dao.MusicianDao;
+import dao.Musician_InstrumentDao;
 import entity.Instrument;
 import entity.Musician;
 
@@ -25,6 +26,7 @@ public class Menu {
 	private final String DATABASE_NAME = "orchestra";
 	private InstrumentDao instrumentDao = new InstrumentDao();
 	private MusicianDao musicianDao = new MusicianDao();
+	private Musician_InstrumentDao musician_instrumentDao = new Musician_InstrumentDao();
 	private Scanner scanner = new Scanner(System.in);
 	private List<String> options = Arrays.asList("Display all Instruments",
 												 "Display an Instrument", 
@@ -121,7 +123,7 @@ public class Menu {
 		 */
 		System.out.println("\nThank you for using the " + DATABASE_NAME + " database.");
 		System.out.println("Program ended!");
-		scanner.nextLine();
+		System.out.println();
 	}
 	
 	
@@ -191,9 +193,19 @@ public class Menu {
 		if (!(instrument == null)) {
 			System.out.println("Id: " + instrument.getInstrument_id() + ": " + instrument.getName() + " \n\tSection: " + instrument.getSection());		
 			System.out.println();
+			System.out.println("These Musicians Will Also Be Deleted: ");
+			List<Musician> musicians  = musicianDao.getMusiciansByInstrumentName(deleteName);
+			for (Musician musician : musicians) {
+				System.out.println("\t\tMusician Id: " + musician.getMusician_id() + "\tName: " 
+								+ musician.getFirst_name() + " " + musician.getLast_name());	
+			}
 			System.out.print("Would you like to proceed, yes or no?  ");
 			String response = scanner.nextLine();
 			if (response.equalsIgnoreCase("yes")) {
+				for (Musician musician : musicians) {
+						musician_instrumentDao.deleteMusicianInstruments(musician.getMusician_id(),instrument.getInstrument_id());
+						musicianDao.deleteMusicianById(musician.getMusician_id());
+				}
 				instrumentDao.deleteInstrument(deleteName);		
 			} else {
 				System.out.println("Delete Instrument not performed!");
@@ -279,6 +291,9 @@ public class Menu {
 			System.out.println("\t\tMusician Id: " + musician.getMusician_id() + "\tName: " 
 							+ musician.getFirst_name() + " " + musician.getLast_name());	
 		}
+		if (musicians.isEmpty()) {
+			System.out.println("Result empty!");
+		}
 	}
 	
 	
@@ -291,9 +306,24 @@ public class Menu {
 		System.out.print("Enter Last Name: ");
 		String last_name = scanner.nextLine();
 		System.out.print("Enter Primary Instrument: ");
-		String instOne = scanner.nextLine();	
+		String instOne = scanner.nextLine();
+		Boolean instrumentDoesNotExist = true;
+		Instrument instrument = null;
+		while (instrumentDoesNotExist) {
+			if (!(instOne.equals(""))) {	
+				instrument = instrumentDao.getInstrumentByName(instOne);
+			} 
+			if (instrument == null) {
+				System.out.println("Instrument Name doesn't exist!");
+				System.out.print("\tRe-Enter Primary Instrument: ");
+				instOne = scanner.nextLine();
+			} else {
+				instrumentDoesNotExist = false;
+			}
+		}
 		musicianDao.createNewMusician(first_name,last_name,instOne);
 	}
+	
 	
 	/*
 	 * deleteMusician() method

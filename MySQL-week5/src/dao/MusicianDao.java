@@ -106,7 +106,12 @@ public class MusicianDao {
 		 */
 		Musician musician = getMusicianByName(firstName,lastName);		
 		if (!instOne.equals("")) {		
-			musician_instrumentDao.createMusicianInstruments(musician.getMusician_id(),instrumentDao.getInstrumentByName(instOne).getInstrument_id());	
+			Instrument instrument = instrumentDao.getInstrumentByName(instOne);
+			if (!(instrument == null)) {
+				musician_instrumentDao.createMusicianInstruments(musician.getMusician_id(),instrument.getInstrument_id());	
+			} else {
+				System.out.println("Instrument Name doesn't exist!");
+			}
 		}	
 	
 	}
@@ -138,7 +143,6 @@ public class MusicianDao {
 		for (Musician_Instrument musician_instrument : music_insts) {			
 			musician_instrumentDao.deleteMusicianInstrumentsByMusicianId(musician_instrument.getMusician_id());
 		}
-	
 			
 		PreparedStatement ps = connection.prepareStatement(DELETE_MUSICIAN_BY_ID_UPDATE);
 		ps.setInt(1, deleteId);
@@ -171,24 +175,28 @@ public class MusicianDao {
 		/*
 		 *  Check for records in musician_instruments & delete in reinsert those records?  	 
 		 */ 
-		
-		
-		for (Instrument instrument : musician.getInstruments()) {			
-			if (instOne.equals("")) {
-				if (counter == 1) {
-					new_instruments.add(instrument);
-				}
-			} else {
-				/* create new instrument object and add it to the list.
-				 * (1)  Find the instrument record
-				 * (2)  Add it to new_instruments
-				 */
-				new_instruments.add(instrumentDao.getInstrumentByName(instOne));
-				musician_instrumentDao.deleteMusicianInstruments(id,instrument.getInstrument_id());
-				musician_instrumentDao.createMusicianInstruments(id,instrumentDao.getInstrumentByName(instOne).getInstrument_id());	
-			}	
-			counter++;
-		}
+		List<Instrument> instruments = musician.getInstruments();
+		if (!(instruments == null)) {
+			for (Instrument instrument : musician.getInstruments()) {			
+				if (instOne.equals("")) {
+					if (counter == 1) {
+						new_instruments.add(instrument);
+					}
+				} else {
+					/* create new instrument object and add it to the list.
+					 * (1)  Find the instrument record
+					 * (2)  Add it to new_instruments
+					 */
+					new_instruments.add(instrumentDao.getInstrumentByName(instOne));
+					musician_instrumentDao.deleteMusicianInstruments(id,instrument.getInstrument_id());
+					musician_instrumentDao.createMusicianInstruments(id,instrumentDao.getInstrumentByName(instOne).getInstrument_id());	
+				}	
+				counter++;
+			}
+		} else if (!(instOne.equals(""))) {
+			new_instruments.add(instrumentDao.getInstrumentByName(instOne));
+			musician_instrumentDao.createMusicianInstruments(id,new_instruments.get(1).getInstrument_id());	
+		}	
 		musician.setInstruments(new_instruments);	
 	}
 
