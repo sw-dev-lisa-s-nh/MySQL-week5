@@ -134,7 +134,7 @@ public class Menu {
 		for (int i = 0; i<options.size(); i++) {
 			System.out.println(" "+(i+1) + ") " + options.get(i));
 		}		
-		System.out.println("-1) Exit Program");
+		System.out.println(" -1) Exit Program");
 		System.out.println("-------------------------------------------------------");
 	}
 	
